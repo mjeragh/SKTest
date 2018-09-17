@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var playableRect : CGRect
-    
+    var pegRedNode : PegNode!
    
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,22 +42,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let margin = (size.width - playableWidth) / 2
             playableRect = CGRect(x: margin, y: 0, width: playableWidth, height: size.height)
         }
-        
-        
+
+
         //
-        
-        
-        
-        
+
+
+
+
         physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
         physicsWorld.contactDelegate = self
         debugDrawPlayableArea()
-        
+
     }
     
     override func didMove(to view: SKView) {
-       
-
+       pegRedNode = childNode(withName: "peg") as! PegNode
+        enumerateChildNodes(withName: "//*", using: {node, _ in if let eventListnerNode = node as? EventListnerNode {
+            eventListnerNode.didMovetoScene()
+            }
+        })
        
     }
     
@@ -71,4 +74,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
+}
+
+protocol EventListnerNode {
+    func didMovetoScene()
 }

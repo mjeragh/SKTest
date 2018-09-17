@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B23BF42D214E7A1600A008F4 /* PegNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23BF42C214E7A1600A008F4 /* PegNode.swift */; };
 		B278EE5921458EB3003606F3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B278EE5821458EB3003606F3 /* AppDelegate.swift */; };
 		B278EE5B21458EB3003606F3 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B278EE5A21458EB3003606F3 /* GameScene.sks */; };
 		B278EE5F21458EB3003606F3 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B278EE5E21458EB3003606F3 /* GameScene.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B23BF42C214E7A1600A008F4 /* PegNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegNode.swift; sourceTree = "<group>"; };
 		B278EE5521458EB3003606F3 /* SKTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SKTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B278EE5821458EB3003606F3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B278EE5A21458EB3003606F3 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			children = (
 				B278EE5821458EB3003606F3 /* AppDelegate.swift */,
 				B278EE5A21458EB3003606F3 /* GameScene.sks */,
+				B23BF42C214E7A1600A008F4 /* PegNode.swift */,
 				B278EE5E21458EB3003606F3 /* GameScene.swift */,
 				B278EE6021458EB3003606F3 /* GameViewController.swift */,
 				B278EE6221458EB3003606F3 /* Main.storyboard */,
@@ -142,6 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B23BF42D214E7A1600A008F4 /* PegNode.swift in Sources */,
 				B278EE5F21458EB3003606F3 /* GameScene.swift in Sources */,
 				B278EE6121458EB3003606F3 /* GameViewController.swift in Sources */,
 				B278EE5921458EB3003606F3 /* AppDelegate.swift in Sources */,
