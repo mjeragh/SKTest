@@ -11,9 +11,6 @@ import SpriteKit
 class PegNode: SKSpriteNode, EventListnerNode {
     
     
-    
-    
-    
     func didMovetoScene() {
         print("Red Peg")
         //adding Pan Gesture
