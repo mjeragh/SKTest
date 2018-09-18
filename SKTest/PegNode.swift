@@ -15,44 +15,17 @@ class PegNode: SKSpriteNode, EventListnerNode {
         print("Red Peg")
         //adding Pan Gesture
         isUserInteractionEnabled = true
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector(("handlePanFrom:")))
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureHandler(_:)))
         //self.view!.addGestureRecognizer(gestureRecognizer)
-        self.scene?.view?.addGestureRecognizer(gestureRecognizer)
+        self.addGestureRecognizer(gestureRecognizer)
     }
     
-    @objc func handlePanFrom(recognizer: UIPanGestureRecognizer) {
+    @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
         if recognizer.state == .began {
-//            var touchLocation = recognizer.location(in:recognizer.view)
-//            touchLocation = self.convertPointFromView(touchLocation)
-            
-//            self.selectNodeForTouch(touchLocation: touchLocation)
             print("Touchdown")
         } else if recognizer.state == .changed {
-//            var translation = recognizer.translation(in:recognizer.view!)
-//            translation = CGPoint(x: translation.x, y: -translation.y)
-//
-//            self.panForTranslation(translation: translation)
-//
-//            recognizer.setTranslation(CGRect.zero, inView: recognizer.view)
             print("Touching")
         } else if recognizer.state == .ended {
-//            if selectedNode.name != kAnimalNodeName {
-//                let scrollDuration = 0.2
-//                let velocity = recognizer.velocity(in:recognizer.view)
-//                let pos = selectedNode.position
-//
-//                // This just multiplies your velocity with the scroll duration.
-//                let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
-//
-//                var newPos = CGPoint(x: pos.x + p.x, y: pos.y + p.y)
-//                newPos = self.boundLayerPos(newPos)
-//                selectedNode.removeAllActions()
-//
-//                let moveTo = SKAction.moveTo(newPos, duration: scrollDuration)
-//                moveTo.timingMode = .EaseOut
-//                selectedNode.runAction(moveTo)
-//
-//            }
             print("Its Over")
         }
     }
