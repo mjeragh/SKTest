@@ -56,7 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func didMove(to view: SKView) {
-       pegRedNode = childNode(withName: "peg") as! PegNode
+        pegRedNode = childNode(withName: "peg") as? PegNode
         enumerateChildNodes(withName: "//*", using: {node, _ in if let eventListnerNode = node as? EventListnerNode {
             eventListnerNode.didMovetoScene()
             }

@@ -17,7 +17,7 @@ class PegNode: SKSpriteNode, EventListnerNode {
         isUserInteractionEnabled = true
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureHandler(_:)))
         //self.view!.addGestureRecognizer(gestureRecognizer)
-        self.addGestureRecognizer(gestureRecognizer)
+        self.scene?.view?.addGestureRecognizer(gestureRecognizer)
     }
     
     @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
