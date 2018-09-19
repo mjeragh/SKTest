@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
+    var pos : CGPoint!
     var playableRect : CGRect
     var pegRedNode : PegNode!
     var selectedNode = SKSpriteNode()
@@ -58,6 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         pegRedNode = childNode(withName: "peg") as? PegNode
+        pos = pegRedNode.position
         enumerateChildNodes(withName: "//*", using: {node, _ in if let eventListnerNode = node as? EventListnerNode {
             eventListnerNode.didMovetoScene()
             }
@@ -94,36 +95,48 @@ protocol EventListnerNode {
 
 extension GameScene {
     
+    
+    
     @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
         if recognizer.state == .began {
             print("Touchdown")
+            
             var touchLocation = recognizer.location(in: recognizer.view)
             touchLocation = self.convertPoint(fromView: touchLocation)
-            selectNodeForTouch(touchLocation: touchLocation)
+            if (self.atPoint(touchLocation) is SKSpriteNode){
+                selectedNode = self.atPoint(touchLocation) as! SKSpriteNode
+            } else {
+                recognizer.state = .failed //from https://goo.gl/ddzhTs
+            }
+            
             
         } else if recognizer.state == .changed {
             
             var translation = recognizer.translation(in: recognizer.view!)
             translation = CGPoint(x: translation.x, y: -translation.y)
-            panForTranslation(translation: translation)
+            //panForTranslation(translation: translation)
+           
+            
+            selectedNode.position = CGPoint(x: pos.x + translation.x, y:  pos.y + translation.y)
+             pos = selectedNode.position
             
         } else if recognizer.state == .ended {
-            if selectedNode.name != "peg" {
-                let scrollDuration = 0.2
-                let velocity = recognizer.velocity(in: recognizer.view)
-                let pos = selectedNode.position
-                
-                // This just multiplies your velocity with the scroll duration.
-                let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
-                
-                let newPos = CGPoint(x: pos.x + p.x, y: pos.y + p.y)
-//                newPos = self.boundLayerPos(aNewPosition: newPos)
-                selectedNode.removeAllActions()
-                
-                let moveTo = SKAction.move(to: pos, duration: scrollDuration)
-                moveTo.timingMode = .easeOut
-                selectedNode.run(moveTo)
-            }
+//            if selectedNode.name != "peg" {
+//                let scrollDuration = 0.2
+//                let velocity = recognizer.velocity(in: recognizer.view)
+//                let pos = selectedNode.position
+//
+//                // This just multiplies your velocity with the scroll duration.
+//                let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
+//
+//                let newPos = CGPoint(x: pos.x + p.x, y: pos.y + p.y)
+////                newPos = self.boundLayerPos(aNewPosition: newPos)
+//                selectedNode.removeAllActions()
+//
+//                let moveTo = SKAction.move(to: pos, duration: scrollDuration)
+//                moveTo.timingMode = .easeOut
+//                selectedNode.run(moveTo)
+//            }
         }
     }
     
@@ -147,6 +160,9 @@ extension GameScene {
                     selectedNode.run(SKAction.repeatForever(sequence))
                 }
             }
+        }
+        else {
+            
         }
     }
 
