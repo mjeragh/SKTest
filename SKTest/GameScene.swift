@@ -120,7 +120,7 @@ extension GameScene {
 //                newPos = self.boundLayerPos(aNewPosition: newPos)
                 selectedNode.removeAllActions()
                 
-                let moveTo = SKAction.move(to: newPos, duration: scrollDuration)
+                let moveTo = SKAction.move(to: pos, duration: scrollDuration)
                 moveTo.timingMode = .easeOut
                 selectedNode.run(moveTo)
             }
