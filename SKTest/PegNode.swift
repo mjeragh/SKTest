@@ -15,20 +15,10 @@ class PegNode: SKSpriteNode, EventListnerNode {
         print("Red Peg")
         //adding Pan Gesture
         isUserInteractionEnabled = true
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureHandler(_:)))
-        //self.view!.addGestureRecognizer(gestureRecognizer)
-        self.scene?.view?.addGestureRecognizer(gestureRecognizer)
+        
     }
     
-    @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
-        if recognizer.state == .began {
-            print("Touchdown")
-        } else if recognizer.state == .changed {
-            print("Touching")
-        } else if recognizer.state == .ended {
-            print("Its Over")
-        }
-    }
+    
     
 //    func panForTranslation(translation: CGPoint) {
 //        let position = selectedNode.position
