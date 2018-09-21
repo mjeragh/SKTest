@@ -96,8 +96,6 @@ protocol EventListnerNode {
 
 extension GameScene {
     
-    
-    
     @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
         var touchLocation = recognizer.location(in: recognizer.view)
         touchLocation = self.convertPoint(fromView: touchLocation)
@@ -113,20 +111,51 @@ extension GameScene {
             
         } else if recognizer.state == .changed {
             
-            if ( previousPan != CGPoint.zero) {
-                //if previousPan has been set, this can run
-                
-                let panXDiff = touchLocation.x - previousPan.x
-                let panYDiff = touchLocation.y - previousPan.y
-                
-                selectedNode.position = CGPoint(x: selectedNode.position.x + panXDiff, y:  selectedNode.position.y + panYDiff)
-            }
-            previousPan = touchLocation
+            var translation = recognizer.translation(in: recognizer.view!)
+            translation = CGPoint(x: translation.x, y: -translation.y)
+            selectedNode.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
+            
         } else if recognizer.state == .ended {
-            previousPan = CGPoint.zero
+            recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
         }
     }
     
-   
+    func selectNodeForTouch(touchLocation : CGPoint) {
+        // 1
+        let touchedNode = self.atPoint(touchLocation)
+        
+        if touchedNode is SKSpriteNode {
+            // 2
+            if !selectedNode.isEqual(touchedNode) {
+                selectedNode.removeAllActions()
+                selectedNode.run(SKAction.rotate(toAngle: 0.0, duration: 0.1))
+                
+                selectedNode = touchedNode as! SKSpriteNode
+                
+                // 3
+                if touchedNode.name == "peg" {
+                    let sequence = SKAction.sequence([SKAction.rotate(byAngle: degToRad(degree: -4.0), duration: 0.1),
+                                                      SKAction.rotate(byAngle: 0.0, duration: 0.1),
+                                                      SKAction.rotate(byAngle: degToRad(degree: 4.0), duration: 0.1)])
+                    selectedNode.run(SKAction.repeatForever(sequence))
+                }
+            }
+        }
+    }
+
+    func panForTranslation(translation : CGPoint) {
+        let position = selectedNode.position
+        
+        if selectedNode.name == "peg" {
+            selectedNode.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        } else {
+            print("Did not select a peg")
+        }
+    }
+    
+    func degToRad(degree: Double) -> CGFloat {
+        return CGFloat(degree / 180.0 * Double.pi)
+    }
     
 }
