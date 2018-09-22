@@ -118,7 +118,7 @@ extension GameScene {
             
             translation = CGPoint(x: translation.x, y: -translation.y)
             
-            
+            //the line below I was testing with touchlocation instead of pos on Sept 22, I believe it is faster not smoother
             selectedNode.position = CGPoint(x: touchLocation.x + translation.x, y: touchLocation.y + translation.y)
             recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
             // pos = touchLocation
