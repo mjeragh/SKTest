@@ -180,18 +180,23 @@ extension GameScene {
            
             
             
-            let scrollDuration = 0.2
+           // let scrollDuration = 0.2
             let velocity = recognizer.velocity(in: recognizer.view)
+            let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
+            let slideMultiplier = magnitude / 200
+            print("magnitude: \(magnitude), slideMultiplier: \(slideMultiplier)")
             
-            let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: (velocity.y) * CGFloat(scrollDuration))
-            var newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
-           
-            newPos.x = min(max(newPos.x, 0), size.width)
-            newPos.y = min(max(newPos.y, 0), size.height-156)
+            // 2
+            let slideFactor = 0.1 * slideMultiplier     //Increase for more of a slide
+            // 3
+            let finalPoint = CGPoint(x:recognizer.view!.center.x + (velocity.x * slideFactor),
+                                     y:recognizer.view!.center.y + (velocity.y * slideFactor))
+            // 4
+//            finalPoint.x = min(max(finalPoint.x, 0), size.width)
+//            finalPoint.y = min(max(finalPoint.y, 0), size.height-156)
             
-            let moveTo = SKAction.move(to: newPos, duration: scrollDuration)
+            selectedNode.physicsBody?.applyImpulse(CGVector(dx: finalPoint.x, dy: -finalPoint.y))
             
-            selectedNode.run(moveTo)
             }//end state
     }// Pan Gesture
     
