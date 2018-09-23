@@ -172,11 +172,13 @@ extension GameScene {
             recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
             
             selectedNode.physicsBody?.affectedByGravity = true
+           
+            
             
             let scrollDuration = 0.2
             let velocity = recognizer.velocity(in: recognizer.view)
             
-            let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
+            let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: (velocity.y + 9.8) * CGFloat(scrollDuration))
             var newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
            
             newPos.x = min(max(newPos.x, 0), size.width)
