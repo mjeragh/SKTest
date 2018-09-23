@@ -102,6 +102,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        if endPanState {
+            pegRedNode.removeAllActions()
+            pegRedNode.physicsBody?.affectedByGravity=true
+        }
         endPanState = false
     }
 }
@@ -127,6 +131,7 @@ extension GameScene {
             
         } else if collision == PhysicsCategory.Peg | PhysicsCategory.Edge {
             print("BABY")
+            endPanState = !endPanState
             pegRedNode.removeAllActions()
             edgeFeedback.impactOccurred()
         }
@@ -178,7 +183,7 @@ extension GameScene {
             let scrollDuration = 0.2
             let velocity = recognizer.velocity(in: recognizer.view)
             
-            let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: (velocity.y + 9.8) * CGFloat(scrollDuration))
+            let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: (velocity.y) * CGFloat(scrollDuration))
             var newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
            
             newPos.x = min(max(newPos.x, 0), size.width)
