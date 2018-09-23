@@ -15,7 +15,9 @@ class PegNode: SKSpriteNode, EventListnerNode {
         print("Red Peg")
         //adding Pan Gesture
         isUserInteractionEnabled = true
-        
+        physicsBody?.collisionBitMask = PhysicsCategory.Block | PhysicsCategory.Edge
+        physicsBody?.categoryBitMask = PhysicsCategory.Peg
+        physicsBody?.contactTestBitMask = PhysicsCategory.Block | PhysicsCategory.Edge
     }
     
   

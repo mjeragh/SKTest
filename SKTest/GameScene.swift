@@ -121,7 +121,7 @@ extension GameScene {
             
         } else if collision == PhysicsCategory.Peg | PhysicsCategory.Edge {
             print("BABY")
-            
+            pegRedNode.removeAllActions()
         }
     }
 }
