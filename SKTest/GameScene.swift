@@ -100,10 +100,10 @@ extension GameScene {
     @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
         var touchLocation = recognizer.location(in: recognizer.view)
         touchLocation = self.convertPoint(fromView: touchLocation)
+       
         if recognizer.state == .began {
             print("Touchdown")
-            var touchLocation = recognizer.location(in: recognizer.view)
-            touchLocation = self.convertPoint(fromView: touchLocation)
+            
             if (self.atPoint(touchLocation) is SKSpriteNode){
                 selectedNode = self.atPoint(touchLocation) as! SKSpriteNode
             } else {
@@ -114,14 +114,13 @@ extension GameScene {
         } else if recognizer.state == .changed {
             
             var translation = recognizer.translation(in: recognizer.view!)
-            //translation = self.convertPoint(fromView: translation)
             
             translation = CGPoint(x: translation.x, y: -translation.y)
             
             //the line below I was testing with touchlocation instead of pos on Sept 22, I believe it is faster not smoother
             selectedNode.position = CGPoint(x: touchLocation.x + translation.x, y: touchLocation.y + translation.y)
             recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
-            // pos = touchLocation
+             //pos = touchLocation
             
         } else if recognizer.state == .ended {
             recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
