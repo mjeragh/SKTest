@@ -25,6 +25,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var pegRedNode : PegNode!
     var selectedNode = SKSpriteNode()
     //var previousPan = CGPoint.zero
+    var endPanState = false
+    let blockFeedback = UIImpactFeedbackGenerator(style: .medium)
+    let edgeFeedback = UIImpactFeedbackGenerator(style: .light)
     
     required init?(coder aDecoder: NSCoder) {
         //        let playableRect = CGRect(x: 0, y: 0, width: size.height, height: size.width)
@@ -99,6 +102,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        endPanState = false
     }
 }
 
@@ -118,10 +122,13 @@ extension GameScene {
         
         if collision == PhysicsCategory.Peg | PhysicsCategory.Block {
             print("SUCCESS")
+            endPanState = !endPanState
+            blockFeedback.impactOccurred()
             
         } else if collision == PhysicsCategory.Peg | PhysicsCategory.Edge {
             print("BABY")
             pegRedNode.removeAllActions()
+            edgeFeedback.impactOccurred()
         }
     }
 }
@@ -146,6 +153,12 @@ extension GameScene {
             
         } else if recognizer.state == .changed {
             
+            if endPanState {
+                recognizer.state = .failed
+                endPanState = !endPanState
+                selectedNode.physicsBody?.affectedByGravity = true
+            }
+            
             var translation = recognizer.translation(in: recognizer.view!)
             
             translation = CGPoint(x: translation.x, y: -translation.y)
@@ -164,8 +177,10 @@ extension GameScene {
             let velocity = recognizer.velocity(in: recognizer.view)
             
             let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
-            let newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
+            var newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
            
+            newPos.x = min(max(newPos.x, 0), size.width)
+            newPos.y = min(max(newPos.y, 0), size.height-156)
             
             let moveTo = SKAction.move(to: newPos, duration: scrollDuration)
             
@@ -174,9 +189,5 @@ extension GameScene {
     }// Pan Gesture
     
 
-    
-    func degToRad(degree: Double) -> CGFloat {
-        return CGFloat(degree / 180.0 * Double.pi)
-    }
     
 }

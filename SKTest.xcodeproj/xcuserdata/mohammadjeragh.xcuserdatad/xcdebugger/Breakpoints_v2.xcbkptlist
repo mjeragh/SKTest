@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "SKTest/GameScene.swift"
-            timestampString = "559419633.820722"
+            timestampString = "559422761.614452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "panGestureHandler(_:)"
             landmarkType = "7">
             <Actions>
@@ -35,11 +35,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "SKTest/GameScene.swift"
-            timestampString = "559419633.821282"
+            timestampString = "559422761.6152509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "panGestureHandler(_:)"
             landmarkType = "7">
             <Actions>
@@ -56,15 +56,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             filePath = "SKTest/GameScene.swift"
-            timestampString = "559419633.821709"
+            timestampString = "559422761.615886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
             <Actions>
@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SKTest/GameScene.swift"
-            timestampString = "559419633.822008"
+            timestampString = "559422761.616343"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "init(coder:)"
             landmarkType = "7">
          </BreakpointContent>
