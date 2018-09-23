@@ -9,6 +9,16 @@
 import SpriteKit
 import GameplayKit
 
+
+struct PhysicsCategory {
+    static let None:    UInt32 = 0
+    static let Peg:     UInt32 = 0b1        //1
+    static let Block:   UInt32 = 0b10       //2
+    static let Hole:    UInt32 = 0b100      //4
+    static let Edge:    UInt32 = 0b1000     //8
+    static let Label:   UInt32 = 0b10000    //16
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var pos : CGPoint!
     var playableRect : CGRect
@@ -52,6 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
         physicsWorld.contactDelegate = self
+        physicsBody!.categoryBitMask = PhysicsCategory.Edge
         debugDrawPlayableArea()
 
     }
@@ -95,6 +106,27 @@ protocol EventListnerNode {
     func didMovetoScene()
 }
 
+
+extension GameScene {
+    func didEnd(_ contact: SKPhysicsContact) {
+        //
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        if collision == PhysicsCategory.Peg | PhysicsCategory.Block {
+            print("SUCCESS")
+            
+        } else if collision == PhysicsCategory.Peg | PhysicsCategory.Edge {
+            print("BABY")
+            
+        }
+    }
+}
+
+
 extension GameScene {
     
     @objc func panGestureHandler(_ recognizer: UIPanGestureRecognizer) {
@@ -136,7 +168,7 @@ extension GameScene {
            
             
             let moveTo = SKAction.move(to: newPos, duration: scrollDuration)
-            moveTo.timingMode = .easeOut
+            
             selectedNode.run(moveTo)
             }//end state
     }// Pan Gesture
