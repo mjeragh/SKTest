@@ -21,6 +21,7 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var pos : CGPoint!
+    var prevPos : CGPoint!
     var playableRect : CGRect
     var pegRedNode : PegNode!
     var selectedNode = SKSpriteNode()
@@ -56,10 +57,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let margin = (size.width - playableWidth) / 2
             playableRect = CGRect(x: margin, y: 0, width: playableWidth, height: size.height)
         }
-
-
-        //
-
 
 
 
@@ -123,15 +120,15 @@ extension GameScene {
     func didBegin(_ contact: SKPhysicsContact) {
         
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        
+        endPanState = !endPanState
         if collision == PhysicsCategory.Peg | PhysicsCategory.Block {
             print("SUCCESS")
-            endPanState = !endPanState
+            
             blockFeedback.impactOccurred()
             
         } else if collision == PhysicsCategory.Peg | PhysicsCategory.Edge {
             print("BABY")
-            endPanState = !endPanState
+            
             pegRedNode.removeAllActions()
             edgeFeedback.impactOccurred()
         }
@@ -158,11 +155,17 @@ extension GameScene {
             
         } else if recognizer.state == .changed {
             
+            var translation = recognizer.translation(in: recognizer.view!)
+            
+            translation = CGPoint(x: translation.x, y: -translation.y)
+            
             if endPanState {
+              
                 recognizer.state = .failed
                 endPanState = !endPanState
+                selectedNode.position = CGPoint(x: pos.x - prevPos.x, y: pos.y - prevPos.y)
                 selectedNode.physicsBody?.affectedByGravity = true
-            }
+            }else{
             
             var translation = recognizer.translation(in: recognizer.view!)
             
@@ -170,10 +173,12 @@ extension GameScene {
             
             //the line below I was testing with touchlocation instead of pos on Sept 22, I believe it is faster not smoother
             selectedNode.position = CGPoint(x: pos.x + translation.x, y: pos.y + translation.y)
+            prevPos = translation
             recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
-             pos = touchLocation
+            pos = touchLocation
             
-        } else if recognizer.state == .ended {
+            }
+        }else if recognizer.state == .ended {
             recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
             
             selectedNode.physicsBody?.affectedByGravity = true
@@ -184,7 +189,7 @@ extension GameScene {
             let velocity = recognizer.velocity(in: recognizer.view)
             let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
             let slideMultiplier = magnitude / 200
-            print("magnitude: \(magnitude), slideMultiplier: \(slideMultiplier)")
+            //print("magnitude: \(magnitude), slideMultiplier: \(slideMultiplier)")
             
             // 2
             let slideFactor = 0.1 * slideMultiplier     //Increase for more of a slide
