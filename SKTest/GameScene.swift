@@ -8,7 +8,7 @@
 
 import SpriteKit
 import GameplayKit
-
+import CoreMotion
 
 struct PhysicsCategory {
     static let None:    UInt32 = 0
@@ -29,6 +29,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var endPanState = false
     let blockFeedback = UIImpactFeedbackGenerator(style: .medium)
     let edgeFeedback = UIImpactFeedbackGenerator(style: .light)
+    
+    let motionManager = CMMotionManager()
+    var xAcceleration = CGFloat(0)
+    
     
     required init?(coder aDecoder: NSCoder) {
         //        let playableRect = CGRect(x: 0, y: 0, width: size.height, height: size.width)
@@ -75,6 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         })
        
+        setupCoreMotion()
         
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.panGestureHandler(_:)))
         gestureRecognizer.minimumNumberOfTouches = 1
@@ -92,23 +97,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
-    
-    
+    //for the bug of moving beyond the boundaries,
+    //we might update the location here after the simulation and before rendering on the screen
+    //or maybe adding a constraint
+    override func didSimulatePhysics() {
+        //
+    }
     
     
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        if endPanState {
-            pegRedNode.removeAllActions()
-            pegRedNode.physicsBody?.affectedByGravity=true
-        }
-        endPanState = false
+//        if endPanState {
+//            pegRedNode.removeAllActions()
+//            pegRedNode.physicsBody?.affectedByGravity=true
+//        }
+//        endPanState = false
+        //pegRedNode.physicsBody?.velocity.dx = xAcceleration * 1000.0
     }
 }
 
 protocol EventListnerNode {
     func didMovetoScene()
+}
+
+extension GameScene {
+    func setupCoreMotion(){
+        motionManager.accelerometerUpdateInterval = 0.2
+        let queue = OperationQueue()
+        motionManager.startAccelerometerUpdates(to: queue, withHandler: {accelerometerData, error in
+            guard let accelermeterData = accelerometerData else {
+                return
+            }
+            let acceleration = accelermeterData.acceleration
+            self.xAcceleration = CGFloat(acceleration.x) * 0.75 + self.xAcceleration * 0.25
+        })
+    }
 }
 
 
@@ -120,7 +144,7 @@ extension GameScene {
     func didBegin(_ contact: SKPhysicsContact) {
         
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        endPanState = !endPanState
+        endPanState = true
         if collision == PhysicsCategory.Peg | PhysicsCategory.Block {
             print("SUCCESS")
             
@@ -148,6 +172,7 @@ extension GameScene {
             if (self.atPoint(touchLocation) is SKSpriteNode){
                 selectedNode = self.atPoint(touchLocation) as! SKSpriteNode
                 selectedNode.physicsBody?.affectedByGravity = false
+                endPanState = false
             } else {
                 recognizer.state = .failed //from https://goo.gl/ddzhTs
             }
@@ -161,6 +186,8 @@ extension GameScene {
             
             if endPanState {
               
+                pegRedNode.removeAllActions()
+                
                 recognizer.state = .failed
                 endPanState = !endPanState
                 selectedNode.position = CGPoint(x: pos.x - prevPos.x, y: pos.y - prevPos.y)
