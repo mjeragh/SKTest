@@ -32,7 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let motionManager = CMMotionManager()
     var xAcceleration = CGFloat(0)
-    
+    var yAcceleration = CGFloat(0)
     
     required init?(coder aDecoder: NSCoder) {
         //        let playableRect = CGRect(x: 0, y: 0, width: size.height, height: size.width)
@@ -112,8 +112,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //            pegRedNode.removeAllActions()
 //            pegRedNode.physicsBody?.affectedByGravity=true
 //        }
-//        endPanState = false
-        //pegRedNode.physicsBody?.velocity.dx = xAcceleration * 1000.0
+        if  endPanState {
+        pegRedNode.physicsBody?.velocity.dx = xAcceleration * 1000.0
+       // pegRedNode.physicsBody?.velocity.dy = yAcceleration * 1000.0
+        }
     }
 }
 
@@ -131,6 +133,7 @@ extension GameScene {
             }
             let acceleration = accelermeterData.acceleration
             self.xAcceleration = CGFloat(acceleration.x) * 0.75 + self.xAcceleration * 0.25
+            self.yAcceleration = CGFloat(acceleration.y) * 0.75 + self.yAcceleration * 0.25
         })
     }
 }
