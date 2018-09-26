@@ -78,6 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         pegRedNode = childNode(withName: "peg") as? PegNode
         pos = pegRedNode.position
+        //pegRedNode.physicsBody?.affectedByGravity
         enumerateChildNodes(withName: "//*", using: {node, _ in if let eventListnerNode = node as? EventListnerNode {
             eventListnerNode.didMovetoScene()
             }
@@ -116,10 +117,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //            pegRedNode.removeAllActions()
 //            pegRedNode.physicsBody?.affectedByGravity=true
 //        }
-        if  endPanState {
-        pegRedNode.physicsBody?.velocity.dx = xAcceleration * 1000.0
-       // pegRedNode.physicsBody?.velocity.dy = yAcceleration * 1000.0
-        }
+//        if  endPanState {
+//            os_signpost(.begin, log: motionLog, name: "motion X")
+//            pegRedNode.physicsBody?.velocity.dx = xAcceleration * 1000.0
+//            pegRedNode.physicsBody?.velocity.dy = yAcceleration * 1000.0
+//            os_signpost(.end, log: motionLog, name: "motion X")
+//        }
     }
 }
 
@@ -180,6 +183,7 @@ extension GameScene {
                 selectedNode = self.atPoint(touchLocation) as! SKSpriteNode
                 selectedNode.physicsBody?.affectedByGravity = false
                 endPanState = false
+                pos = selectedNode.position //judt added
             } else {
                 recognizer.state = .failed //from https://goo.gl/ddzhTs
             }
@@ -196,7 +200,7 @@ extension GameScene {
                 pegRedNode.removeAllActions()
                 
                 recognizer.state = .failed
-                endPanState = !endPanState
+                endPanState = !endPanState //I think this line is useless and should be removed
                 selectedNode.position = CGPoint(x: pos.x - prevPos.x, y: pos.y - prevPos.y)
                 selectedNode.physicsBody?.affectedByGravity = true
             }else{
@@ -217,7 +221,7 @@ extension GameScene {
             
             selectedNode.physicsBody?.affectedByGravity = true
            
-            
+            endPanState = true
             
            // let scrollDuration = 0.2
             let velocity = recognizer.velocity(in: recognizer.view)
