@@ -119,7 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        }
         if  endPanState {
             os_signpost(.begin, log: motionLog, name: "motion X")
-            physicsWorld.gravity =  CGVector(dx: xAcceleration, dy: yAcceleration)
+            physicsWorld.gravity =  CGVector(dx: xAcceleration * 20, dy: yAcceleration * 20)
             os_signpost(.end, log: motionLog, name: "motion X")
         }
     }
