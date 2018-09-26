@@ -9,6 +9,8 @@
 import SpriteKit
 import GameplayKit
 import CoreMotion
+import os.log
+import os.signpost
 
 struct PhysicsCategory {
     static let None:    UInt32 = 0
@@ -33,6 +35,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let motionManager = CMMotionManager()
     var xAcceleration = CGFloat(0)
     var yAcceleration = CGFloat(0)
+    
+    let motionLog = OSLog(subsystem: "com.lanterntech.sktest", category: "MotionOperation")
     
     required init?(coder aDecoder: NSCoder) {
         //        let playableRect = CGRect(x: 0, y: 0, width: size.height, height: size.width)
@@ -149,12 +153,12 @@ extension GameScene {
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         endPanState = true
         if collision == PhysicsCategory.Peg | PhysicsCategory.Block {
-            print("SUCCESS")
+            os_log("SUCCESS")
             
             blockFeedback.impactOccurred()
             
         } else if collision == PhysicsCategory.Peg | PhysicsCategory.Edge {
-            print("BABY")
+            os_log("BABY")
             
             pegRedNode.removeAllActions()
             edgeFeedback.impactOccurred()
@@ -170,7 +174,7 @@ extension GameScene {
         touchLocation = self.convertPoint(fromView: touchLocation)
        
         if recognizer.state == .began {
-            print("Touchdown")
+            os_log("Touchdown")
             
             if (self.atPoint(touchLocation) is SKSpriteNode){
                 selectedNode = self.atPoint(touchLocation) as! SKSpriteNode
