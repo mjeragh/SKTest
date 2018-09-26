@@ -28,7 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var pegRedNode : PegNode!
     var selectedNode = SKSpriteNode()
     //var previousPan = CGPoint.zero
-    var endPanState = false
+    var endPanState = true
     let blockFeedback = UIImpactFeedbackGenerator(style: .medium)
     let edgeFeedback = UIImpactFeedbackGenerator(style: .light)
     
@@ -78,7 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         pegRedNode = childNode(withName: "peg") as? PegNode
         pos = pegRedNode.position
-        //pegRedNode.physicsBody?.affectedByGravity
+        physicsWorld.gravity =  CGVector(dx: xAcceleration, dy: yAcceleration)
         enumerateChildNodes(withName: "//*", using: {node, _ in if let eventListnerNode = node as? EventListnerNode {
             eventListnerNode.didMovetoScene()
             }
@@ -117,12 +117,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //            pegRedNode.removeAllActions()
 //            pegRedNode.physicsBody?.affectedByGravity=true
 //        }
-//        if  endPanState {
-//            os_signpost(.begin, log: motionLog, name: "motion X")
-//            pegRedNode.physicsBody?.velocity.dx = xAcceleration * 1000.0
-//            pegRedNode.physicsBody?.velocity.dy = yAcceleration * 1000.0
-//            os_signpost(.end, log: motionLog, name: "motion X")
-//        }
+        if  endPanState {
+            os_signpost(.begin, log: motionLog, name: "motion X")
+            physicsWorld.gravity =  CGVector(dx: xAcceleration, dy: yAcceleration)
+            os_signpost(.end, log: motionLog, name: "motion X")
+        }
     }
 }
 
